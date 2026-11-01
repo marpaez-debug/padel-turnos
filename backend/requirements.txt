@@ -1,0 +1,5 @@
+fastapi
+uvicorn[standard]
+aiomysql
+cryptography
+pydantic-settings
