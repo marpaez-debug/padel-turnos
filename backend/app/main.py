@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 
 from app.core.database import close_db, connect_db, get_connection
 from app.core.exceptions import AppError
-from app.routers import auth
+from app.routers import auth, canchas, reportes, turnos
 
 
 @asynccontextmanager
@@ -18,7 +18,7 @@ async def lifespan(app: FastAPI):
     await close_db()     # al apagar
 
 
-app = FastAPI(title="API Turnos de Padel", version="0.2.0", lifespan=lifespan)
+app = FastAPI(title="API Turnos de Padel", version="0.3.0", lifespan=lifespan)
 
 # Permite que el frontend de React (puerto 5173) llame a esta API
 app.add_middleware(
@@ -36,6 +36,9 @@ async def manejar_error_de_negocio(request: Request, error: AppError):
 
 
 app.include_router(auth.router)
+app.include_router(canchas.router)
+app.include_router(turnos.router)
+app.include_router(reportes.router)
 
 
 @app.get("/health")

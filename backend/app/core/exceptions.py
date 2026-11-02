@@ -23,3 +23,7 @@ class ForbiddenError(AppError):      # 403: estas autenticado pero no tenes perm
 
 class NotFoundError(AppError):       # 404: no existe
     status_code = 404
+
+
+class BadRequestError(AppError):     # 400: los datos son validos en tipo, pero violan una regla de negocio
+    status_code = 400
