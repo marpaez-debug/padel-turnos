@@ -6,6 +6,7 @@ import Canchas from "./pages/Canchas";
 import Inicio from "./pages/Inicio";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Turnos from "./pages/Turnos";
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
       <Route element={<ProtectedRoute />}>
         <Route element={<Layout />}>
           <Route path="/" element={<Inicio />} />
+          <Route path="/turnos" element={<Turnos />} />
 
           {/* Y estas, además, solo para el admin */}
           <Route element={<ProtectedRoute roles={["admin"]} />}>

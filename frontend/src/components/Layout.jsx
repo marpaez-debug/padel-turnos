@@ -11,6 +11,7 @@ export default function Layout() {
         <strong>Turnos de pádel</strong>
         <nav>
           <NavLink to="/" end>Inicio</NavLink>
+          <NavLink to="/turnos">Turnos</NavLink>
           {usuario.rol === "admin" && <NavLink to="/canchas">Canchas</NavLink>}
         </nav>
         <span>

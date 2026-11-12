@@ -1,3 +1,5 @@
+import { hoy } from "./horarios";
+
 // Validaciones del formulario. Son las mismas reglas que tiene el backend (Pydantic).
 // Cada función devuelve un objeto con los errores; si está vacío, todo está bien.
 
@@ -49,6 +51,27 @@ export function validarCancha(datos) {
   }
   if (datos.precio_hora === "" || isNaN(precio) || precio <= 0 || precio > 1000000) {
     errores.precio_hora = "El precio debe ser un número mayor a 0 (máximo 1.000.000)";
+  }
+
+  return errores;
+}
+
+export function validarTurno(datos) {
+  const errores = {};
+
+  if (!datos.cancha_id) {
+    errores.cancha_id = "Elegí una cancha";
+  }
+  if (!datos.fecha) {
+    errores.fecha = "Elegí una fecha";
+  } else if (datos.fecha < hoy()) {
+    errores.fecha = "La fecha no puede ser anterior a hoy";
+  }
+  if (!datos.hora_inicio) {
+    errores.hora_inicio = "Elegí un horario";
+  }
+  if (![60, 90, 120].includes(Number(datos.duracion_min))) {
+    errores.duracion_min = "Elegí una duración válida";
   }
 
   return errores;
