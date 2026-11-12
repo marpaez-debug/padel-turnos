@@ -6,6 +6,7 @@ import Canchas from "./pages/Canchas";
 import Inicio from "./pages/Inicio";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Reportes from "./pages/Reportes";
 import Turnos from "./pages/Turnos";
 
 export default function App() {
@@ -23,6 +24,7 @@ export default function App() {
           {/* Y estas, además, solo para el admin */}
           <Route element={<ProtectedRoute roles={["admin"]} />}>
             <Route path="/canchas" element={<Canchas />} />
+            <Route path="/reportes" element={<Reportes />} />
           </Route>
         </Route>
       </Route>

@@ -89,3 +89,19 @@ td.acciones button { margin-right: 6px; padding: 4px 10px; font-size: 14px; }
 button.secundario { background: #e3e8ef; color: #222; }
 button.peligro { background: #b3261e; }
 .ok { background: #e4f4ea; color: #1e6b3f; padding: 8px; border-radius: 4px; }
+
+/* Reportes y dashboard */
+.reporte { margin-bottom: 32px; }
+.reporte-cabecera { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.resumen { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; }
+.dato { flex: 1; min-width: 180px; background: white; padding: 16px 20px; border-radius: 8px; color: #555; }
+.dato strong { display: block; font-size: 28px; color: #222; }
+.busqueda { display: flex; gap: 8px; margin-bottom: 16px; }
+.busqueda input { padding: 8px; font-size: 16px; }
+
+/* Al imprimir (para guardar como PDF) se oculta lo que no sirve */
+@media print {
+  .barra, .no-imprimir { display: none; }
+  body { background: white; }
+  .contenido { max-width: none; padding: 0; }
+}
