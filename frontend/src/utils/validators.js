@@ -35,3 +35,21 @@ export function validarRegistro(datos) {
 
   return errores;
 }
+
+export function validarCancha(datos) {
+  const errores = {};
+  const nombre = datos.nombre.trim();
+  const precio = Number(datos.precio_hora);
+
+  if (nombre.length < 2 || nombre.length > 50) {
+    errores.nombre = "El nombre debe tener entre 2 y 50 caracteres";
+  }
+  if (datos.tipo !== "techada" && datos.tipo !== "descubierta") {
+    errores.tipo = "Elegí un tipo válido";
+  }
+  if (datos.precio_hora === "" || isNaN(precio) || precio <= 0 || precio > 1000000) {
+    errores.precio_hora = "El precio debe ser un número mayor a 0 (máximo 1.000.000)";
+  }
+
+  return errores;
+}

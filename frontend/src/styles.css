@@ -60,3 +60,32 @@ button {
 table { width: 100%; border-collapse: collapse; background: white; }
 th, td { text-align: left; padding: 10px; border-bottom: 1px solid #ddd; }
 th { background: #f5f7fa; }
+
+/* Navegación y formularios de gestión */
+.barra nav { display: flex; gap: 16px; }
+
+.formulario {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  max-width: 420px;
+}
+.formulario h2 { margin-top: 0; }
+.campo select {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  margin-top: 4px;
+  font-size: 16px;
+}
+.check { display: block; margin-bottom: 14px; }
+
+.acciones { display: flex; gap: 8px; }
+td.acciones { display: table-cell; white-space: nowrap; }
+td.acciones button { margin-right: 6px; padding: 4px 10px; font-size: 14px; }
+
+button.secundario { background: #e3e8ef; color: #222; }
+button.peligro { background: #b3261e; }
+.ok { background: #e4f4ea; color: #1e6b3f; padding: 8px; border-radius: 4px; }

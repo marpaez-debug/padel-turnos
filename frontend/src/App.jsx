@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Canchas from "./pages/Canchas";
 import Inicio from "./pages/Inicio";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -16,6 +17,11 @@ export default function App() {
       <Route element={<ProtectedRoute />}>
         <Route element={<Layout />}>
           <Route path="/" element={<Inicio />} />
+
+          {/* Y estas, además, solo para el admin */}
+          <Route element={<ProtectedRoute roles={["admin"]} />}>
+            <Route path="/canchas" element={<Canchas />} />
+          </Route>
         </Route>
       </Route>
 
