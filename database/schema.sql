@@ -53,6 +53,7 @@ CREATE TABLE pagos (
     CONSTRAINT ck_pagos_monto CHECK (monto > 0)
 ) ENGINE=InnoDB;
 
+DELIMITER //
 
 CREATE PROCEDURE sp_reservar_turno(
     IN  p_usuario_id   INT UNSIGNED,
