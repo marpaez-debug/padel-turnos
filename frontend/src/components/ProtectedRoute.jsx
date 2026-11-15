@@ -2,7 +2,6 @@ import { Navigate, Outlet } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
 
-// Si no hay sesión te manda al login. Con roles={["admin"]} también controla el rol.
 export default function ProtectedRoute({ roles }) {
   const { usuario, cargando } = useAuth();
 

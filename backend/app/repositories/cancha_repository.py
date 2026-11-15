@@ -1,4 +1,3 @@
-"""SQL de la tabla canchas."""
 import aiomysql
 
 from app.core.exceptions import ConflictError
@@ -29,7 +28,7 @@ async def crear(conn, d) -> int:
                 (d.nombre, d.tipo, d.precio_hora, d.activa),
             )
             return cur.lastrowid
-    except aiomysql.IntegrityError:  # viola el UNIQUE del nombre
+    except aiomysql.IntegrityError:
         raise ConflictError("Ya existe una cancha con ese nombre")
 
 
@@ -48,5 +47,5 @@ async def eliminar(conn, cancha_id: int) -> None:
     try:
         async with conn.cursor() as cur:
             await cur.execute("DELETE FROM canchas WHERE id = %s", (cancha_id,))
-    except aiomysql.IntegrityError:  # la FK de turnos lo impide
+    except aiomysql.IntegrityError:
         raise ConflictError("No se puede eliminar: la cancha tiene turnos. Desactivala en su lugar.")

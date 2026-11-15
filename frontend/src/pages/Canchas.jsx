@@ -43,7 +43,6 @@ export default function Canchas() {
     setErrorApi("");
   }
 
-  // Carga los datos de la cancha en el formulario para modificarla
   function editar(cancha) {
     setForm({
       nombre: cancha.nombre,
@@ -62,7 +61,6 @@ export default function Canchas() {
     setErrorApi("");
     setMensaje("");
 
-    // 1) validamos en el navegador
     const erroresForm = validarCancha(form);
     setErrores(erroresForm);
     if (Object.keys(erroresForm).length > 0) {
@@ -76,7 +74,7 @@ export default function Canchas() {
       activa: form.activa,
     };
 
-    // 2) la API valida otra vez y guarda
+  
     try {
       if (editandoId === null) {
         await crearCancha(datos);

@@ -3,7 +3,6 @@ from app.repositories import cancha_repository as repo
 
 
 async def listar(conn, usuario: dict) -> list[dict]:
-    # Los clientes solo ven canchas activas; el admin ve todas
     return await repo.listar(conn, solo_activas=usuario["rol"] != "admin")
 
 

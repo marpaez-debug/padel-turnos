@@ -11,7 +11,7 @@ export default function Login() {
   const [errores, setErrores] = useState({});
   const [errorApi, setErrorApi] = useState("");
 
-  // Si ya hay sesión, no tiene sentido mostrar el login
+
   if (usuario) {
     return <Navigate to="/" />;
   }
@@ -24,14 +24,12 @@ export default function Login() {
     e.preventDefault();
     setErrorApi("");
 
-    // 1) validamos en el navegador
     const erroresForm = validarLogin(datos);
     setErrores(erroresForm);
     if (Object.keys(erroresForm).length > 0) {
       return;
     }
 
-    // 2) la API vuelve a validar
     try {
       await login(datos.email.trim(), datos.password);
     } catch (error) {

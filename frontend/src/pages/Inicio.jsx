@@ -9,7 +9,6 @@ export default function Inicio() {
   const [error, setError] = useState("");
   const [cargando, setCargando] = useState(true);
 
-  // Cuando se abre la pantalla, pedimos las canchas a la API
   useEffect(() => {
     listarCanchas()
       .then((datos) => setCanchas(datos))

@@ -1,9 +1,8 @@
-"""SQL de turnos."""
 import aiomysql
 
 from app.core.exceptions import ConflictError
 
-# CONSULTA 1 (INNER JOIN): turno + nombre del usuario + nombre de la cancha
+
 _SELECT_DETALLE = """
     SELECT t.id, t.fecha,
            LEFT(t.hora_inicio, 5) AS hora_inicio, LEFT(t.hora_fin, 5) AS hora_fin,
@@ -17,7 +16,6 @@ _SELECT_DETALLE = """
 
 
 async def reservar(conn, usuario_id: int, d) -> int:
-    """Llama al stored procedure: la transaccion (COMMIT/ROLLBACK) vive en la base."""
     async with conn.cursor(aiomysql.DictCursor) as cur:
         try:
             await cur.execute(
@@ -25,10 +23,10 @@ async def reservar(conn, usuario_id: int, d) -> int:
                 (usuario_id, d.cancha_id, d.fecha, d.hora_inicio, d.duracion_min, d.metodo_pago),
             )
         except aiomysql.OperationalError as e:
-            if e.args[0] == 1644:          # nuestros SIGNAL del procedure
+            if e.args[0] == 1644:
                 raise ConflictError(e.args[1])
             raise
-        await cur.execute("SELECT @nuevo_id AS id")  # leemos el parametro OUT
+        await cur.execute("SELECT @nuevo_id AS id")
         return (await cur.fetchone())["id"]
 
 
@@ -66,5 +64,5 @@ async def actualizar_estado(conn, turno_id: int, estado: str) -> None:
     try:
         async with conn.cursor() as cur:
             await cur.execute("UPDATE turnos SET estado = %s WHERE id = %s", (estado, turno_id))
-    except aiomysql.IntegrityError:  # reactivar un turno cuyo horario ya fue tomado
+    except aiomysql.IntegrityError:
         raise ConflictError("Ese horario ya fue reservado por otro turno")

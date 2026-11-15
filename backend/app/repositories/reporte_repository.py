@@ -1,9 +1,7 @@
-"""Consultas analiticas (solo lectura)."""
 import aiomysql
 
 
 async def ingresos_por_cancha_y_mes(conn) -> list[dict]:
-    """CONSULTA 2: INNER JOIN + GROUP BY (cantidad de turnos e ingresos)."""
     async with conn.cursor(aiomysql.DictCursor) as cur:
         await cur.execute(
             """SELECT LEFT(t.fecha, 7) AS mes, c.nombre AS cancha,
@@ -18,7 +16,6 @@ async def ingresos_por_cancha_y_mes(conn) -> list[dict]:
 
 
 async def clientes_frecuentes(conn) -> list[dict]:
-    """CONSULTA 3: SUBQUERY en HAVING (clientes con mas turnos que el promedio)."""
     async with conn.cursor(aiomysql.DictCursor) as cur:
         await cur.execute(
             """SELECT u.id, u.nombre, u.email, COUNT(*) AS total_turnos
@@ -37,7 +34,6 @@ async def clientes_frecuentes(conn) -> list[dict]:
 
 
 async def canchas_sin_reservas(conn, fecha) -> list[dict]:
-    """Extra (SUBQUERY con NOT IN): canchas activas sin ningun turno ese dia."""
     async with conn.cursor(aiomysql.DictCursor) as cur:
         await cur.execute(
             """SELECT id, nombre, tipo, precio_hora, activa FROM canchas

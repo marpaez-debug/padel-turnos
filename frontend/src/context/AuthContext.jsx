@@ -9,7 +9,6 @@ export function AuthProvider({ children }) {
   const [usuario, setUsuario] = useState(null);
   const [cargando, setCargando] = useState(true);
 
-  // Al abrir la página: si hay un token guardado, le preguntamos a la API quién es
   useEffect(() => {
     if (!obtenerToken()) {
       setCargando(false);

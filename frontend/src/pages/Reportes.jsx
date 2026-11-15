@@ -32,7 +32,7 @@ export default function Reportes() {
   const [error, setError] = useState("");
   const [cargando, setCargando] = useState(true);
 
-  // Al abrir la pantalla pedimos los dos primeros reportes
+
   useEffect(() => {
     Promise.all([reporteIngresos(), reporteClientesFrecuentes()])
       .then(([datosIngresos, datosClientes]) => {
@@ -56,7 +56,7 @@ export default function Reportes() {
     }
   }
 
-  // Datos del dashboard, calculados a partir del reporte de ingresos
+
   const totalTurnos = ingresos.reduce((suma, fila) => suma + fila.turnos, 0);
   const totalIngresos = ingresos.reduce((suma, fila) => suma + fila.ingresos, 0);
 

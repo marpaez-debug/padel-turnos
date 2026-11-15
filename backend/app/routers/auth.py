@@ -1,4 +1,3 @@
-"""Endpoints de autenticacion. Solo traducen HTTP; la logica esta en el service."""
 from fastapi import APIRouter, Depends
 
 from app.core.database import get_connection

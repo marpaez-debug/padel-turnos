@@ -1,4 +1,3 @@
-"""Seguridad hecha a mano con la libreria estandar: hash de contrasenas y JWT (HS256)."""
 import base64
 import hashlib
 import hmac
@@ -15,10 +14,6 @@ class TokenError(Exception):
     """El token es invalido, fue alterado o esta vencido."""
 
 
-# ----------------------------------------------------------------------
-# Contrasenas: PBKDF2-HMAC-SHA256 con sal aleatoria
-# Formato guardado: pbkdf2_sha256$iteraciones$sal$hash
-# ----------------------------------------------------------------------
 def hash_password(password: str) -> str:
     sal = secrets.token_bytes(16)
     digest = hashlib.pbkdf2_hmac("sha256", password.encode(), sal, ITERACIONES)
@@ -33,15 +28,11 @@ def verify_password(password: str, guardado: str) -> bool:
         calculado = hashlib.pbkdf2_hmac(
             "sha256", password.encode(), bytes.fromhex(sal_hex), int(iteraciones)
         )
-        # compare_digest tarda siempre lo mismo: evita filtrar datos por el tiempo
         return hmac.compare_digest(calculado, bytes.fromhex(digest_hex))
     except ValueError:
         return False
 
 
-# ----------------------------------------------------------------------
-# JWT: header.payload.firma, cada parte en base64url
-# ----------------------------------------------------------------------
 def _b64_encode(datos: bytes) -> str:
     return base64.urlsafe_b64encode(datos).rstrip(b"=").decode()
 
@@ -71,11 +62,9 @@ def create_token(datos: dict, minutos: int | None = None) -> str:
 def decode_token(token: str) -> dict:
     try:
         header_b64, payload_b64, firma_b64 = token.split(".")
-        # 1) La firma tiene que coincidir con la que calculamos nosotros
         esperada = _firmar(f"{header_b64}.{payload_b64}")
         if not hmac.compare_digest(esperada, _b64_decode(firma_b64)):
             raise TokenError("Firma invalida")
-        # 2) Recien ahora confiamos en el contenido
         header = json.loads(_b64_decode(header_b64))
         if header.get("alg") != "HS256":
             raise TokenError("Algoritmo no permitido")

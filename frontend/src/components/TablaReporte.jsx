@@ -1,7 +1,5 @@
 import { exportarExcel } from "../utils/exportar";
 
-// Muestra una tabla de un reporte con su botón para exportar a Excel
-// columnas: [{ clave, titulo, dinero? }]
 export default function TablaReporte({ titulo, archivo, columnas, filas }) {
   return (
     <section className="reporte">

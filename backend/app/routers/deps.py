@@ -1,4 +1,3 @@
-"""Dependencias de seguridad reutilizables en cualquier endpoint."""
 from fastapi import Depends
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
@@ -31,7 +30,6 @@ async def get_current_user(
 
 
 def require_roles(*roles: str):
-    """Uso: Depends(require_roles('admin')) protege un endpoint por rol."""
 
     async def verificador(usuario: dict = Depends(get_current_user)) -> dict:
         if usuario["rol"] not in roles:

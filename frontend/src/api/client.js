@@ -1,5 +1,3 @@
-// Acá se hacen todos los pedidos a la API (con fetch) y se maneja el token
-
 const URL_API = "http://127.0.0.1:8000";
 
 export function guardarToken(token) {
@@ -39,7 +37,6 @@ export async function pedir(ruta, metodo = "GET", datos) {
   const json = await respuesta.json();
 
   if (!respuesta.ok) {
-    // "detail" es un texto, o una lista cuando el error es 422 (validación)
     const detalle = json.detail;
     if (typeof detalle === "string") {
       throw new Error(detalle);

@@ -21,7 +21,6 @@ async def listar(fecha: date | None = None, usuario=Depends(get_current_user),
     return await service.listar(conn, usuario, fecha)
 
 
-# Va ANTES de /{turno_id}, si no FastAPI interpretaria "disponibilidad" como un id
 @router.get("/disponibilidad", response_model=list[OcupadoOut])
 async def disponibilidad(cancha_id: int, fecha: date, _=Depends(get_current_user),
                          conn=Depends(get_connection)):
@@ -41,5 +40,4 @@ async def cambiar_estado(turno_id: int, datos: EstadoIn, usuario=Depends(require
 
 @router.delete("/{turno_id}", response_model=TurnoOut)
 async def cancelar(turno_id: int, usuario=Depends(get_current_user), conn=Depends(get_connection)):
-    """No borra la fila: la marca como cancelada (y libera el horario)."""
     return await service.cancelar(conn, usuario, turno_id)

@@ -8,7 +8,6 @@ from app.schemas.cancha import CanchaOut
 from app.schemas.reporte import ClienteFrecuenteOut, IngresoOut
 from app.services import reporte_service as service
 
-# Todo el router es solo para admin
 router = APIRouter(prefix="/reportes", tags=["Reportes"], dependencies=[Depends(require_roles("admin"))])
 
 

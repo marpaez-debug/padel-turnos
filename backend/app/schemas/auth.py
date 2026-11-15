@@ -1,4 +1,3 @@
-"""Schemas de autenticacion: validan tipos y formatos de lo que entra y sale de la API."""
 from pydantic import BaseModel, Field, field_validator
 
 EMAIL_PATTERN = r"^[^@\s]+@[^@\s]+\.[^@\s]+$"

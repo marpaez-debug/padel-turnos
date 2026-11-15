@@ -1,4 +1,3 @@
-"""Punto de entrada de la API."""
 from contextlib import asynccontextmanager
 
 import aiomysql
@@ -20,7 +19,6 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="API Turnos de Padel", version="0.3.0", lifespan=lifespan)
 
-# Permite que el frontend de React (puerto 5173) llame a esta API
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
@@ -43,7 +41,6 @@ app.include_router(reportes.router)
 
 @app.get("/health")
 async def health(conn=Depends(get_connection)):
-    """Verifica que la API y la base de datos respondan."""
     async with conn.cursor(aiomysql.DictCursor) as cur:
         await cur.execute("SELECT COUNT(*) AS canchas FROM canchas")
         fila = await cur.fetchone()

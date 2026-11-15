@@ -1,4 +1,3 @@
-"""Acceso a la tabla usuarios. Es la UNICA capa que escribe SQL para usuarios."""
 import aiomysql
 
 _COLUMNAS = "id, nombre, email, password_hash, rol"
@@ -6,7 +5,6 @@ _COLUMNAS = "id, nombre, email, password_hash, rol"
 
 async def get_by_email(conn, email: str) -> dict | None:
     async with conn.cursor(aiomysql.DictCursor) as cur:
-        # %s es un parametro: el valor viaja aparte, no se pega al texto SQL
         await cur.execute(f"SELECT {_COLUMNAS} FROM usuarios WHERE email = %s", (email,))
         return await cur.fetchone()
 

@@ -1,4 +1,3 @@
-"""Reglas de negocio de los turnos."""
 from datetime import datetime
 
 from app.core.exceptions import BadRequestError, ConflictError, ForbiddenError, NotFoundError
@@ -41,7 +40,7 @@ async def obtener(conn, usuario: dict, turno_id: int) -> dict:
 
 
 async def cancelar(conn, usuario: dict, turno_id: int) -> dict:
-    turno = await obtener(conn, usuario, turno_id)      # ya valida duenio o admin
+    turno = await obtener(conn, usuario, turno_id)   
     if turno["estado"] != "reservado":
         raise ConflictError("Solo se pueden cancelar turnos reservados")
     await repo.actualizar_estado(conn, turno_id, "cancelado")

@@ -58,7 +58,7 @@ export default function Turnos() {
     }
   }
 
-  // Al abrir la pantalla: canchas activas y turnos
+
   useEffect(() => {
     listarCanchas()
       .then((datos) => setCanchas(datos.filter((c) => c.activa)))
@@ -66,7 +66,6 @@ export default function Turnos() {
     cargarTurnos();
   }, []);
 
-  // Cada vez que cambia la cancha o la fecha, pedimos qué horarios están ocupados
   useEffect(() => {
     cargarOcupados(form.cancha_id, form.fecha);
   }, [form.cancha_id, form.fecha]);
@@ -74,7 +73,6 @@ export default function Turnos() {
   function cambiar(e) {
     const { name, value } = e.target;
     const nuevo = { ...form, [name]: value };
-    // si cambia algo que modifica los horarios posibles, borramos el horario elegido
     if (name !== "hora_inicio" && name !== "metodo_pago") {
       nuevo.hora_inicio = "";
     }
@@ -89,14 +87,13 @@ export default function Turnos() {
     setErrorApi("");
     setMensaje("");
 
-    // 1) validamos en el navegador
+
     const erroresForm = validarTurno(form);
     setErrores(erroresForm);
     if (Object.keys(erroresForm).length > 0) {
       return;
     }
 
-    // 2) la API valida otra vez y ejecuta el procedimiento almacenado
     try {
       await reservarTurno({
         cancha_id: Number(form.cancha_id),
@@ -114,7 +111,6 @@ export default function Turnos() {
     }
   }
 
-  // Ejecuta una acción sobre un turno y después refresca todo
   async function accion(funcion, textoOk) {
     setError("");
     setMensaje("");

@@ -1,6 +1,3 @@
-"""Errores de negocio. Los services los lanzan; main.py los convierte en respuestas HTTP."""
-
-
 class AppError(Exception):
     status_code = 500
 

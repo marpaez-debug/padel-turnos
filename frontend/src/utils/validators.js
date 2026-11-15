@@ -1,8 +1,5 @@
 import { hoy } from "./horarios";
 
-// Validaciones del formulario. Son las mismas reglas que tiene el backend (Pydantic).
-// Cada función devuelve un objeto con los errores; si está vacío, todo está bien.
-
 const REGEX_EMAIL = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
 export function validarLogin(datos) {
