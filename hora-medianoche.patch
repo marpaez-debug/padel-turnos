@@ -1,0 +1,48 @@
+diff --git a/frontend/src/pages/Turnos.jsx b/frontend/src/pages/Turnos.jsx
+index 295127b..53e0212 100644
+--- a/frontend/src/pages/Turnos.jsx
++++ b/frontend/src/pages/Turnos.jsx
+@@ -10,7 +10,7 @@ import {
+ } from "../api/turnos";
+ import Field from "../components/Field";
+ import { useAuth } from "../context/AuthContext";
+-import { hoy, horariosLibres } from "../utils/horarios";
++import { hoy, horariosLibres, mostrarHora } from "../utils/horarios";
+ import { validarTurno } from "../utils/validators";
+ 
+ const FORM_VACIO = {
+@@ -173,7 +173,7 @@ export default function Turnos() {
+ 
+         {ocupados.length > 0 && (
+           <p className="mensaje">
+-            Ocupado ese día: {ocupados.map((o) => o.hora_inicio + " a " + o.hora_fin).join(", ")}
++            Ocupado ese día: {ocupados.map((o) => o.hora_inicio + " a " + mostrarHora(o.hora_fin)).join(", ")}
+           </p>
+         )}
+ 
+@@ -227,7 +227,7 @@ export default function Turnos() {
+             {turnos.map((t) => (
+               <tr key={t.id}>
+                 <td>{t.fecha.split("-").reverse().join("/")}</td>
+-                <td>{t.hora_inicio} a {t.hora_fin}</td>
++                <td>{t.hora_inicio} a {mostrarHora(t.hora_fin)}</td>
+                 <td>{t.cancha_nombre}</td>
+                 {esAdmin && <td>{t.usuario_nombre}</td>}
+                 <td>${t.precio_total.toLocaleString("es-AR")}</td>
+diff --git a/frontend/src/utils/horarios.js b/frontend/src/utils/horarios.js
+index ed6e3f7..fd52302 100644
+--- a/frontend/src/utils/horarios.js
++++ b/frontend/src/utils/horarios.js
+@@ -5,6 +5,12 @@ export function hoy() {
+   return d.getFullYear() + "-" + mes + "-" + dia;
+ }
+ 
++// El fin de un turno que termina a medianoche viene como "24:00" (así se calcula bien);
++// en pantalla se muestra como "00:00"
++export function mostrarHora(hora) {
++  return hora === "24:00" ? "00:00" : hora;
++}
++
+ function aMinutos(hora) {
+   const partes = hora.split(":");
+   return Number(partes[0]) * 60 + Number(partes[1]);

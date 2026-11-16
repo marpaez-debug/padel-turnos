@@ -43,7 +43,7 @@ export function validarCancha(datos) {
   if (nombre.length < 2 || nombre.length > 50) {
     errores.nombre = "El nombre debe tener entre 2 y 50 caracteres";
   }
-  if (datos.tipo !== "techada" && datos.tipo !== "descubierta") {
+  if (datos.tipo !== "Techada" && datos.tipo !== "Descubierta") {
     errores.tipo = "Elegí un tipo válido";
   }
   if (datos.precio_hora === "" || isNaN(precio) || precio <= 0 || precio > 1000000) {

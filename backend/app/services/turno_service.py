@@ -4,7 +4,7 @@ from app.core.exceptions import BadRequestError, ConflictError, ForbiddenError, 
 from app.repositories import cancha_repository, turno_repository as repo
 
 APERTURA_MIN = 8 * 60      # 08:00
-CIERRE_MIN = 24 * 60       # el turno debe terminar antes de las 24:00
+CIERRE_MIN = 24 * 60       # el turno debe terminar antes de las 00:00
 
 
 def _validar_reglas(d) -> None:
@@ -14,7 +14,7 @@ def _validar_reglas(d) -> None:
         raise BadRequestError("Los turnos empiezan en punto o y media")
     inicio = d.hora_inicio.hour * 60 + d.hora_inicio.minute
     if inicio < APERTURA_MIN or inicio + d.duracion_min > CIERRE_MIN:
-        raise BadRequestError("Horario fuera de atención (08:00 a 24:00)")
+        raise BadRequestError("Horario fuera de atención (08:00 a 00:00)")
 
 
 async def reservar(conn, usuario: dict, datos) -> dict:

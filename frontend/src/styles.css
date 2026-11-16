@@ -88,7 +88,7 @@ td.acciones button { margin-right: 6px; padding: 4px 10px; font-size: 14px; }
 
 button.secundario { background: #e3e8ef; color: #222; }
 button.peligro { background: #b3261e; }
-.ok { background: #e4f4ea; color: #1e6b3f; padding: 8px; border-radius: 4px; }
+.ok { background: #68d590; color: #072c17; padding: 8px; border-radius: 4px; }
 
 /* Reportes y dashboard */
 .reporte { margin-bottom: 32px; }

@@ -5,6 +5,12 @@ export function hoy() {
   return d.getFullYear() + "-" + mes + "-" + dia;
 }
 
+// El fin de un turno que termina a medianoche viene como "24:00" (así se calcula bien);
+// en pantalla se muestra como "00:00"
+export function mostrarHora(hora) {
+  return hora === "24:00" ? "00:00" : hora;
+}
+
 function aMinutos(hora) {
   const partes = hora.split(":");
   return Number(partes[0]) * 60 + Number(partes[1]);

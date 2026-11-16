@@ -4,7 +4,7 @@ import { actualizarCancha, crearCancha, eliminarCancha, listarCanchas } from "..
 import Field from "../components/Field";
 import { validarCancha } from "../utils/validators";
 
-const FORM_VACIO = { nombre: "", tipo: "techada", precio_hora: "", activa: true };
+const FORM_VACIO = { nombre: "", tipo: "Techada", precio_hora: "", activa: true };
 
 export default function Canchas() {
   const [canchas, setCanchas] = useState([]);
@@ -119,8 +119,8 @@ export default function Canchas() {
         <label className="campo">
           Tipo
           <select name="tipo" value={form.tipo} onChange={cambiar}>
-            <option value="techada">Techada</option>
-            <option value="descubierta">Descubierta</option>
+            <option value="Techada">Techada</option>
+            <option value="Descubierta">Descubierta</option>
           </select>
           {errores.tipo && <span className="error">{errores.tipo}</span>}
         </label>

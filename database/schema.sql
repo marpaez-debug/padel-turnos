@@ -15,7 +15,7 @@ CREATE TABLE usuarios (
 CREATE TABLE canchas (
     id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     nombre      VARCHAR(50) NOT NULL,
-    tipo        ENUM('techada', 'descubierta') NOT NULL DEFAULT 'descubierta',
+    tipo        ENUM('Techada', 'Descubierta') NOT NULL DEFAULT 'Descubierta',
     precio_hora DECIMAL(10,2) NOT NULL,
     activa      BOOLEAN NOT NULL DEFAULT TRUE,
     CONSTRAINT uq_canchas_nombre UNIQUE (nombre),
@@ -121,6 +121,6 @@ END //
 DELIMITER ;
 
 INSERT INTO canchas (nombre, tipo, precio_hora) VALUES
-    ('Cancha 1', 'techada',     12000.00),
-    ('Cancha 2', 'techada',     12000.00),
-    ('Cancha 3', 'descubierta',  9000.00);
+    ('Cancha 1', 'Techada',     12000.00),
+    ('Cancha 2', 'Techada',     12000.00),
+    ('Cancha 3', 'Descubierta',  9000.00);

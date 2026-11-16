@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field, field_validator
 
 class CanchaIn(BaseModel):
     nombre: str = Field(min_length=2, max_length=50)
-    tipo: Literal["techada", "descubierta"]
+    tipo: Literal["Techada", "Descubierta"]
     precio_hora: float = Field(gt=0, le=1_000_000)
     activa: bool = True
 

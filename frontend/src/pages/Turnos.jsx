@@ -10,7 +10,7 @@ import {
 } from "../api/turnos";
 import Field from "../components/Field";
 import { useAuth } from "../context/AuthContext";
-import { hoy, horariosLibres } from "../utils/horarios";
+import { hoy, horariosLibres, mostrarHora } from "../utils/horarios";
 import { validarTurno } from "../utils/validators";
 
 const FORM_VACIO = {
@@ -173,7 +173,7 @@ export default function Turnos() {
 
         {ocupados.length > 0 && (
           <p className="mensaje">
-            Ocupado ese día: {ocupados.map((o) => o.hora_inicio + " a " + o.hora_fin).join(", ")}
+            Ocupado ese día: {ocupados.map((o) => o.hora_inicio + " a " + mostrarHora(o.hora_fin)).join(", ")}
           </p>
         )}
 
@@ -227,7 +227,7 @@ export default function Turnos() {
             {turnos.map((t) => (
               <tr key={t.id}>
                 <td>{t.fecha.split("-").reverse().join("/")}</td>
-                <td>{t.hora_inicio} a {t.hora_fin}</td>
+                <td>{t.hora_inicio} a {mostrarHora(t.hora_fin)}</td>
                 <td>{t.cancha_nombre}</td>
                 {esAdmin && <td>{t.usuario_nombre}</td>}
                 <td>${t.precio_total.toLocaleString("es-AR")}</td>
