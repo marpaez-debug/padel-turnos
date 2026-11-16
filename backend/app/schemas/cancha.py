@@ -17,3 +17,4 @@ class CanchaIn(BaseModel):
 
 class CanchaOut(CanchaIn):
     id: int
+    ocupada_ahora: bool = False

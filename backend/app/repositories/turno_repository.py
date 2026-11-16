@@ -60,6 +60,18 @@ async def ocupados(conn, cancha_id: int, fecha) -> list[dict]:
         return await cur.fetchall()
 
 
+async def completar(conn, turno_id: int, nuevo_fin: str | None = None) -> None:
+    """Marca el turno como completado; si nuevo_fin viene, acorta su hora de fin (libera el resto)."""
+    try:
+        async with conn.cursor() as cur:
+            await cur.execute(
+                "UPDATE turnos SET estado = 'completado', hora_fin = COALESCE(%s, hora_fin) WHERE id = %s",
+                (nuevo_fin, turno_id),
+            )
+    except aiomysql.IntegrityError:
+        raise ConflictError("Ese horario ya fue reservado por otro turno")
+
+
 async def actualizar_estado(conn, turno_id: int, estado: str) -> None:
     try:
         async with conn.cursor() as cur:

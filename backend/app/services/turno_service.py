@@ -47,17 +47,36 @@ async def cancelar(conn, usuario: dict, turno_id: int) -> dict:
     return await repo.get(conn, turno_id)
 
 
+def _minutos(hhmm: str) -> int:
+    h, m = hhmm.split(":")
+    return int(h) * 60 + int(m)
+
+
+def _fin_anticipado(turno: dict, ahora: datetime) -> str | None:
+    """Si un turno de hoy se completa antes de su hora de fin, devuelve la nueva hora de fin
+    (el próximo :00 o :30) para liberar el resto del horario. Si no corresponde, devuelve None."""
+    if turno["fecha"] != ahora.date():
+        return None
+    corte = -(-(ahora.hour * 60 + ahora.minute) // 30) * 30
+    if _minutos(turno["hora_inicio"]) < corte < _minutos(turno["hora_fin"]):
+        return f"{corte // 60:02d}:{corte % 60:02d}:00"
+    return None
+
+
 async def cambiar_estado(conn, usuario: dict, turno_id: int, estado: str) -> dict:
     turno = await obtener(conn, usuario, turno_id)
     if estado == "completado":
-        # Un turno completado sigue ocupando el horario: si todavía no empezó,
-        # lo correcto es cancelarlo (eso sí libera el horario).
+        # Solo se puede completar un turno que ya empezó; antes, corresponde cancelarlo.
+        ahora = datetime.now()
         inicio = datetime.combine(turno["fecha"], time.fromisoformat(turno["hora_inicio"]))
-        if inicio > datetime.now():
+        if inicio > ahora:
             raise BadRequestError(
                 "No se puede completar un turno que todavía no empezó. Cancelalo si querés liberar el horario"
             )
-    await repo.actualizar_estado(conn, turno_id, estado)
+        # Al completarlo, la cancha queda libre de nuevo (el resto del horario se puede reservar)
+        await repo.completar(conn, turno_id, _fin_anticipado(turno, ahora))
+    else:
+        await repo.actualizar_estado(conn, turno_id, estado)
     return await repo.get(conn, turno_id)
 
 

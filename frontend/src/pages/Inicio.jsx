@@ -10,10 +10,19 @@ export default function Inicio() {
   const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
-    listarCanchas()
-      .then((datos) => setCanchas(datos))
-      .catch((err) => setError(err.message))
-      .finally(() => setCargando(false));
+    function cargar() {
+      listarCanchas()
+        .then((datos) => {
+          setCanchas(datos);
+          setError("");
+        })
+        .catch((err) => setError(err.message))
+        .finally(() => setCargando(false));
+    }
+
+    cargar();
+    const timer = setInterval(cargar, 60000); // se actualiza solo cada minuto
+    return () => clearInterval(timer);
   }, []);
 
   return (
@@ -40,7 +49,7 @@ export default function Inicio() {
                 <td>{c.nombre}</td>
                 <td>{c.tipo}</td>
                 <td>${c.precio_hora.toLocaleString("es-AR")}</td>
-                <td>{c.activa ? "Disponible" : "Inactiva"}</td>
+                <td>{!c.activa ? "Inactiva" : c.ocupada_ahora ? "Ocupada ahora" : "Disponible"}</td>
               </tr>
             ))}
           </tbody>

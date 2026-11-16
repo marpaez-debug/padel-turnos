@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import aiomysql
 
 from app.core.exceptions import ConflictError
@@ -6,11 +8,18 @@ _COLS = "id, nombre, tipo, precio_hora, activa"
 
 
 async def listar(conn, solo_activas: bool = False) -> list[dict]:
-    sql = f"SELECT {_COLS} FROM canchas"
+    ahora = datetime.now()
+    # ocupada_ahora: hay un turno reservado que está en curso en este momento
+    sql = f"""SELECT {_COLS},
+                     EXISTS (SELECT 1 FROM turnos t
+                             WHERE t.cancha_id = canchas.id AND t.estado = 'reservado'
+                               AND t.fecha = %s AND %s >= t.hora_inicio AND %s < t.hora_fin) AS ocupada_ahora
+              FROM canchas"""
     if solo_activas:
         sql += " WHERE activa = TRUE"
+    hora = ahora.strftime("%H:%M:%S")
     async with conn.cursor(aiomysql.DictCursor) as cur:
-        await cur.execute(sql + " ORDER BY nombre")
+        await cur.execute(sql + " ORDER BY nombre", (ahora.strftime("%Y-%m-%d"), hora, hora))
         return await cur.fetchall()
 
 
