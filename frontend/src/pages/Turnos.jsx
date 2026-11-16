@@ -181,7 +181,7 @@ export default function Turnos() {
           Horario de inicio
           <select name="hora_inicio" value={form.hora_inicio} onChange={cambiar} disabled={!hayCanchaYFecha}>
             <option value="">
-              {hayCanchaYFecha && libres.length === 0 ? "No hay horarios libres" : "Elegí un horario"}
+              {hayCanchaYFecha && libres.length === 0 ? "No hay horarios libres para esta duración" : "Elegí un horario"}
             </option>
             {libres.map((h) => (
               <option key={h} value={h}>{h}</option>
