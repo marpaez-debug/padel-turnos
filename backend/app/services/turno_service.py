@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, time
 
 from app.core.exceptions import BadRequestError, ConflictError, ForbiddenError, NotFoundError
 from app.repositories import cancha_repository, turno_repository as repo
@@ -48,7 +48,15 @@ async def cancelar(conn, usuario: dict, turno_id: int) -> dict:
 
 
 async def cambiar_estado(conn, usuario: dict, turno_id: int, estado: str) -> dict:
-    await obtener(conn, usuario, turno_id)
+    turno = await obtener(conn, usuario, turno_id)
+    if estado == "completado":
+        # Un turno completado sigue ocupando el horario: si todavía no empezó,
+        # lo correcto es cancelarlo (eso sí libera el horario).
+        inicio = datetime.combine(turno["fecha"], time.fromisoformat(turno["hora_inicio"]))
+        if inicio > datetime.now():
+            raise BadRequestError(
+                "No se puede completar un turno que todavía no empezó. Cancelalo si querés liberar el horario"
+            )
     await repo.actualizar_estado(conn, turno_id, estado)
     return await repo.get(conn, turno_id)
 

@@ -1,0 +1,25 @@
+diff --git a/backend/.env.example b/backend/.env.example
+new file mode 100644
+index 0000000..8ff9710
+--- /dev/null
++++ b/backend/.env.example
+@@ -0,0 +1,7 @@
++DB_HOST=localhost
++DB_PORT=3306
++DB_USER=root
++DB_PASSWORD=tu_contraseña_de_mysql
++DB_NAME=padel_db
++JWT_SECRET=reemplazar_por_una_clave_larga_y_aleatoria
++JWT_EXPIRE_MINUTES=60
+diff --git a/database/schema.sql b/database/schema.sql
+index 00ce0da..a05d180 100644
+--- a/database/schema.sql
++++ b/database/schema.sql
+@@ -53,6 +53,7 @@ CREATE TABLE pagos (
+     CONSTRAINT ck_pagos_monto CHECK (monto > 0)
+ ) ENGINE=InnoDB;
+ 
++DELIMITER //
+ 
+ CREATE PROCEDURE sp_reservar_turno(
+     IN  p_usuario_id   INT UNSIGNED,

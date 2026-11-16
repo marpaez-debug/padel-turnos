@@ -21,6 +21,11 @@ const FORM_VACIO = {
   metodo_pago: "efectivo",
 };
 
+// Un turno solo se puede completar una vez que empezó; antes, corresponde cancelarlo
+function yaEmpezo(turno) {
+  return new Date(turno.fecha + "T" + turno.hora_inicio) <= new Date();
+}
+
 export default function Turnos() {
   const { usuario } = useAuth();
   const esAdmin = usuario.rol === "admin";
@@ -230,7 +235,7 @@ export default function Turnos() {
                 <td className="acciones">
                   {t.estado === "reservado" && (
                     <>
-                      {esAdmin && (
+                      {esAdmin && yaEmpezo(t) && (
                         <button className="secundario" onClick={() => completar(t)}>Completar</button>
                       )}
                       <button className="peligro" onClick={() => cancelar(t)}>Cancelar</button>

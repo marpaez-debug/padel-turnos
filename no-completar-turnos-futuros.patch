@@ -1,0 +1,52 @@
+diff --git a/backend/app/services/turno_service.py b/backend/app/services/turno_service.py
+index 469bb72..cdfb2ed 100644
+--- a/backend/app/services/turno_service.py
++++ b/backend/app/services/turno_service.py
+@@ -1,4 +1,4 @@
+-from datetime import datetime
++from datetime import datetime, time
+ 
+ from app.core.exceptions import BadRequestError, ConflictError, ForbiddenError, NotFoundError
+ from app.repositories import cancha_repository, turno_repository as repo
+@@ -48,7 +48,15 @@ async def cancelar(conn, usuario: dict, turno_id: int) -> dict:
+ 
+ 
+ async def cambiar_estado(conn, usuario: dict, turno_id: int, estado: str) -> dict:
+-    await obtener(conn, usuario, turno_id)
++    turno = await obtener(conn, usuario, turno_id)
++    if estado == "completado":
++        # Un turno completado sigue ocupando el horario: si todavía no empezó,
++        # lo correcto es cancelarlo (eso sí libera el horario).
++        inicio = datetime.combine(turno["fecha"], time.fromisoformat(turno["hora_inicio"]))
++        if inicio > datetime.now():
++            raise BadRequestError(
++                "No se puede completar un turno que todavía no empezó. Cancelalo si querés liberar el horario"
++            )
+     await repo.actualizar_estado(conn, turno_id, estado)
+     return await repo.get(conn, turno_id)
+ 
+diff --git a/frontend/src/pages/Turnos.jsx b/frontend/src/pages/Turnos.jsx
+index 8c729f8..295127b 100644
+--- a/frontend/src/pages/Turnos.jsx
++++ b/frontend/src/pages/Turnos.jsx
+@@ -21,6 +21,11 @@ const FORM_VACIO = {
+   metodo_pago: "efectivo",
+ };
+ 
++// Un turno solo se puede completar una vez que empezó; antes, corresponde cancelarlo
++function yaEmpezo(turno) {
++  return new Date(turno.fecha + "T" + turno.hora_inicio) <= new Date();
++}
++
+ export default function Turnos() {
+   const { usuario } = useAuth();
+   const esAdmin = usuario.rol === "admin";
+@@ -230,7 +235,7 @@ export default function Turnos() {
+                 <td className="acciones">
+                   {t.estado === "reservado" && (
+                     <>
+-                      {esAdmin && (
++                      {esAdmin && yaEmpezo(t) && (
+                         <button className="secundario" onClick={() => completar(t)}>Completar</button>
+                       )}
+                       <button className="peligro" onClick={() => cancelar(t)}>Cancelar</button>

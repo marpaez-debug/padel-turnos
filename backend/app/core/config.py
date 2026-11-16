@@ -5,10 +5,10 @@ class Settings(BaseSettings):
     db_host: str = "localhost"
     db_port: int = 3306
     db_user: str = "root"
-    db_password: str = ""
+    db_password: str
     db_name: str = "padel_db"
 
-    jwt_secret: str = "clave-solo-para-desarrollo-cambiar"
+    jwt_secret: str
     jwt_expire_minutes: int = 60
 
     model_config = SettingsConfigDict(env_file=".env")
