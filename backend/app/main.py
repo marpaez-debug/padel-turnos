@@ -17,7 +17,7 @@ async def lifespan(app: FastAPI):
     await close_db()     # al apagar
 
 
-app = FastAPI(title="API Turnos de Padel", version="0.3.0", lifespan=lifespan)
+app = FastAPI(title="API Padel World La Rioja", version="0.3.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
