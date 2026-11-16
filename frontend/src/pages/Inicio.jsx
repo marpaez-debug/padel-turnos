@@ -27,7 +27,7 @@ export default function Inicio() {
 
   return (
     <>
-      <h1>Hola, {usuario.nombre}</h1>
+      <h1>Hola, {usuario.nombre}🥎</h1>
       <h2>Canchas</h2>
 
       {cargando && <p className="mensaje">Cargando canchas...</p>}

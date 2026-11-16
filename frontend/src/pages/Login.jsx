@@ -6,7 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import { validarLogin } from "../utils/validators";
 
 export default function Login() {
-  const { usuario, login } = useAuth();
+  const { usuario, login, avisoSesion } = useAuth();
   const [datos, setDatos] = useState({ email: "", password: "" });
   const [errores, setErrores] = useState({});
   const [errorApi, setErrorApi] = useState("");
@@ -40,6 +40,7 @@ export default function Login() {
   return (
     <div className="tarjeta">
       <h1>Ingresar</h1>
+      {avisoSesion && <p className="aviso">{avisoSesion}</p>}
       <form onSubmit={enviar} noValidate>
         <Field label="Email" name="email" type="email" value={datos.email}
                onChange={cambiar} error={errores.email} />
